@@ -1,0 +1,11 @@
+#formulario{
+    display: block;
+}
+
+nav ul li:hover>ul.lista{
+    display: block;
+}
+nav, ul, li, a{
+    text-decoration: none;
+    list-style: none;
+}
