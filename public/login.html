@@ -10,9 +10,13 @@
   </head>
   <body>
     <div id="contenedornav"></div>  
+    <div class="container">
+      <div style="position: fixed; top: 90px; left: 0; right: 0; z-index: 9999; padding: 10px; width: 25%;" id="mensajeBack">
+      </div>
+    </div>
     <div class="container-fluid">
       <hr>
-    <h1 class="d-flex justify-content-center">Inicio de sesión</h1>
+    <h1 class="d-flex justify-content-center">Iniciar Sesion</h1>
     <hr>
     <div class="container-fluid" style="height: 68vh">
 
@@ -20,19 +24,20 @@
 
         <div class="row d-flex justify-content-center">
           <div class="col col-3">
-            <form>
+            <form id="formlogin">
+              <p id="mensajeCompletar"></p>
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">usuario</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input type="text" class="form-control" id="usu" aria-describedby="emailHelp" name="usu">
                 <div id="emailHelp" class="form-text"></div>
               </div>
               <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">contraseña</label>
-                <input type="password" class="form-control" id="exampleInputPassword1">
+                <input type="password" class="form-control" id="contraseña" name="contraseña">
               </div>
-              <button type="submit" class="btn btn-primary">Registrate</button>
               
               <button type="submit" class="btn btn-primary">Ingresar</button>
+              <h4><a href="registro.html">Registrate</a></h1>
             </form>
             <hr>
         </div>
@@ -44,8 +49,7 @@
     <div id="contenedorfooter"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="js/obteenerProductos.js"></script>
-    <script src="src/index.js"></script>
+    <script src="js/login.js"></script>
     <script type="module" src="src/index.js"></script>
 </body>
 </html>

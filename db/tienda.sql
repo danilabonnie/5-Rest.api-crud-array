@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-11-2024 a las 23:39:01
+-- Tiempo de generación: 25-11-2024 a las 21:28:54
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Versión de PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -45,6 +45,46 @@ INSERT INTO `productos` (`id`, `titulo`, `descripcion`, `precio`, `imagen`) VALU
 (5, 'monopatin', 'aaa', 222, 'th.jpg'),
 (6, 'eeeeeeeeeeee', 'aaaaaaaaaaaa', 1111111111, 'fnaf.jpg');
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipo_usuarios`
+--
+
+CREATE TABLE `tipo_usuarios` (
+  `id_tip_usu` int(1) NOT NULL,
+  `descripcion` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `tipo_usuarios`
+--
+
+INSERT INTO `tipo_usuarios` (`id_tip_usu`, `descripcion`) VALUES
+(1, 'usuario'),
+(2, 'administrador');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario`
+--
+
+CREATE TABLE `usuario` (
+  `id` int(11) NOT NULL,
+  `usu` varchar(20) NOT NULL,
+  `contraseña` varchar(20) NOT NULL,
+  `id_tip_usu` int(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`id`, `usu`, `contraseña`, `id_tip_usu`) VALUES
+(1, 'danila', 'danila', 2),
+(32, 'usuario', '123', 1);
+
 --
 -- Índices para tablas volcadas
 --
@@ -56,6 +96,19 @@ ALTER TABLE `productos`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `tipo_usuarios`
+--
+ALTER TABLE `tipo_usuarios`
+  ADD PRIMARY KEY (`id_tip_usu`);
+
+--
+-- Indices de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_tip_usu` (`id_tip_usu`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -64,6 +117,28 @@ ALTER TABLE `productos`
 --
 ALTER TABLE `productos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `tipo_usuarios`
+--
+ALTER TABLE `tipo_usuarios`
+  MODIFY `id_tip_usu` int(1) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`id_tip_usu`) REFERENCES `tipo_usuarios` (`id_tip_usu`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

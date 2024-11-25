@@ -10,17 +10,6 @@ document.querySelector('#agregando').style.display = 'none'
 })
 
 
-// const botonEditar = document.querySelector('#editar');
-// console.log(botonEditar)
-// botonEditar.addEventListener('click', ()=>{
-//     document.querySelector('#editando').style.display = 'block'
-// })
-
-// const cerrar2 = document.querySelector('#cerrar');
-// cerrar2.addEventListener('click', ()=>{
-//     document.querySelector('#editando').style.display = 'none'
-// })
-
 //-----------------------------------------------------------------
 const endpoint = '/productos'
 // const endpoint = 'http://localhost:3000/productos'

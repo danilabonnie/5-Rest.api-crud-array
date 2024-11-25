@@ -1,23 +1,37 @@
-const express = require ('express');
-const fs = require ('fs');
-const cors = require ('cors');
+const express = require('express');
+const fs = require('fs');
+const cors = require('cors');
 const app = express();
-const port =  process.env.MYSQL_ADDON_PORT || 3000;
+const port = process.env.MYSQL_ADDON_PORT || 3000;
+const session = require('express-session');
 
-const db = require ('./db/conexion')
-const dotenv = require ('dotenv/config')
+const db = require('./db/conexion')
+const dotenv = require('dotenv/config')
 
 
 
-app.use(express.json()) 
+app.use(express.json())
 app.use(express.static('./public'));//ejecutar directamente el front cuando corremos el servidor
 app.use(cors());
 
+//
 
-app.get('/productos', (req, res)=>{
+app.use(session({
+    secret: '4', 
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false } 
+}));
+
+
+
+//
+
+
+app.get('/productos', (req, res) => {
     const sql = "SELECT * FROM productos";
-    db.query(sql, (err,result)=>{
-        if(err){
+    db.query(sql, (err, result) => {
+        if (err) {
             console.error('error de lectura')
             return;
         }
@@ -26,7 +40,7 @@ app.get('/productos', (req, res)=>{
     })
 })
 
-app.post('/productos', (req, res)=>{
+app.post('/productos', (req, res) => {
     console.log(req.body)
 
     console.log(Object.values(req.body))
@@ -35,117 +49,137 @@ app.post('/productos', (req, res)=>{
 
     const sql = "insert into productos (titulo, descripcion, precio, imagen) values (?,?,?,?)"
 
-    db.query(sql, values, (err, result)=>{
-        if(err){
+    db.query(sql, values, (err, result) => {
+        if (err) {
             console.error('error al guardar')
             return;
         }
         //console.log(result)
-        res.json({mensaje: "nuevo prod agregado"})
+        res.json({ mensaje: "nuevo prod agregado" })
     })
 })
 
-app.delete('/productos/:id', (req, res)=>{
+app.delete('/productos/:id', (req, res) => {
     const id = req.params.id
 
     const sql = "delete from productos where id = ?"
 
-    db.query(sql, [id], (err, result)=>{
-        if(err){
+    db.query(sql, [id], (err, result) => {
+        if (err) {
             console.error('error al borrar')
             return;
         }
         //console.log(result)
-        res.json({mensaje: "producto eliminado"})
+        res.json({ mensaje: "producto eliminado" })
     })
 })
 
-app.put('/productos', (req, res)=>{
+app.put('/productos', (req, res) => {
     const valores = Object.values(req.body)
     //console.log(valores)
     const sql = "update productos set titulo = ?, descripcion = ?, precio = ?, imagen = ? where id = ?"
 
-    db.query(sql, valores, (err, result)=>{
-        if(err){
+    db.query(sql, valores, (err, result) => {
+        if (err) {
             console.error('error al modificar producto')
             return;
         }
         //console.log(result)
-        res.json({mensaje: "producto actualizado", data: result})
+        res.json({ mensaje: "producto actualizado", data: result })
     })
 })
 
-// function reIndexar(datos){
-//     let indice =1
-//     datos.productos.map((p)=>{
-//     p.id = indice;
-//     indice++;
-// })
-// }
+//usuarios
 
 
-// app.get('/Productos', (req,res)=>{
-//     const datos=leerDatos()
-//     res.json(datos.productos)
-// })
-
-// app.post('/Productos', (req,res)=>{
-//     const datos=leerDatos()
-//     const nuevoProducto={id:datos.productos.length+1,
-//         ...req.body
-//     }
-//     datos.productos.push(nuevoProducto)
-//     escribirDatos(datos)
-//     res.json({mensaje:'Nuevo Producto Agregado'})
-// })
-
-// app.put('/Productos/:id', (req,res)=>{
-//     const id = req.params.id
-//     const nuevosDatos = req.body
-//     const datos=leerDatos()
-//     const prodEncontrado = datos.productos.find((p)=>p.id==req.params.id)
-
-//         if(!prodEncontrado){
-//           return res.status(404),res.json('No se encuentra el producto')
-//         }
-
-//         datos.productos = datos.productos.map(p=>p.id==req.params.id?{...p,...nuevosDatos}:p)
-//         escribirDatos(datos)
-//         res.json({mensaje: 'Productos actualizados', Productos: nuevosDatos})
-// })
-
-// app.delete('/Productos/:id', (req,res)=>{
+app.post('/usuario', (req, res) => {
     
-//     const id = req.params.id
-//     const datos=leerDatos()
-//     const prodEncontrado = datos.productos.find((p)=>p.id==req.params.id)
+    console.log(req.body)
 
-//         if(!prodEncontrado){
-//           return res.status(404),res.json('No se encuentra el producto')
-//         }
+    console.log(Object.values(req.body))
 
-//         datos.productos = datos.productos.filter((p)=>p.id!=req.params.id)
-//         reIndexar(datos)
-//         escribirDatos(datos)
-//         res.json({mensaje:"Producto eliminado", Producto: prodEncontrado})
-// })
+    const values = Object.values(req.body)
 
-// app.get('/Productos/:id', (req,res)=>{
-//     const datos=leerDatos()
-//     const prodEncontrado = datos.productos.find((p)=>p.id==req.params.id)
+    const sql = "INSERT INTO usuario (usu, contraseña, id_tip_usu) VALUES (?, ?, ?)"
 
-//         if(!prodEncontrado){
-//           return res.status(404),res.json('No se encuentra el producto')
-//         }
-//         else{
-//          return res.json({
-//             mensaje: "Producto encontrado",
-//             Producto: prodEncontrado
-//         })
-//         }
-// })
+    db.query(sql, values, (err, result) => {
+        if (err) {
+            console.error('Error al guardar usuario:', err)
+            return res.status(500).json({ mensaje: "Error al guardar usuario" });
+        }
+        res.json({ mensaje: "Cuenta registrada" })
+    })
+})
 
-app.listen(port, ()=>{
+app.post('/login', (req, res) => {
+    const { usu, contraseña } = req.body;
+
+    if (!usu || !contraseña) {
+        return res.status(400).send('Faltan datos');
+    }
+
+    const query = 'SELECT * FROM usuario Where usu = ?';
+    db.query(query, [usu], (err, results) => {
+        if (err) {
+            return res.status(500).send('Error al realizar la consulta');
+        }
+
+        if (results.length === 0) {
+            return res.status(400).send('Usuario no encontrado');
+        }
+
+        const usu = results[0];
+
+        if (contraseña === usu.contraseña) {
+            req.session.id = usu.id;  
+
+            return res.status(200).json({
+                mensaje: 'Login exitoso',
+                id: usu.id,
+                nombre: usu.nombre,
+                id_tip_usu: usu.id_tip_usu
+            });
+        } else {
+            return res.status(400).send('Contraseña incorrecta');
+        }
+    });
+});
+
+
+
+
+app.delete('/usuario/:id', (req, res) => {
+    const id = req.params.id
+
+    const sql = "delete from usuario where id = ?"
+
+    db.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error('error al borrar')
+            return;
+        }
+        //console.log(result)
+        res.json({ mensaje: "usuario eliminado" })
+    })
+})
+
+app.put('/usuario', (req, res) => {
+    const valores = Object.values(req.body)
+    //console.log(valores)
+    const sql = "update usuario set contraseña = ? where id = ?"
+
+    db.query(sql, valores, (err, result) => {
+        if (err) {
+            console.error('error al modificar contraseña')
+            return;
+        }
+        //console.log(result)
+        res.json({ mensaje: "contraseña actualizada", data: result })
+    })
+})
+
+
+app.listen(port, () => {
     console.log(`servidor corriendo en el puerto ${port}`)
 }
 )
