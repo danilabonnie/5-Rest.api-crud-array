@@ -1,11 +1,19 @@
-mostrarMensaje=(mensaje)=>{
-    console.log(mensaje)
-    console.log(document.querySelector('#mensajeBack'))
-    document.querySelector('#mensajeBack').className += " bg-warning";
-    document.querySelector('#mensajeBack').innerHTML = mensaje
-  }
+document.addEventListener('DOMContentLoaded', function() {
+  mostrarNavbar();
+});
 
-const formularioLogin = document.forms['formlogin'];  
+const mostrarMensaje = (mensaje) => {
+  console.log(mensaje);
+  const mensajeBack = document.querySelector('#mensajeBack');
+  if (mensajeBack) {
+      mensajeBack.className += " bg-warning";
+      mensajeBack.innerHTML = mensaje;
+  } else {
+      console.error('El elemento #mensajeBack no existe en el DOM.');
+  }
+};
+
+const formularioLogin = document.forms['formlogin'];
 formularioLogin.addEventListener('submit', (event) => {
   event.preventDefault();
 
@@ -13,66 +21,63 @@ formularioLogin.addEventListener('submit', (event) => {
   const contraseña = formularioLogin.contraseña.value;
 
   if (!usu || !contraseña) {
-    document.querySelector('#mensaje').innerHTML = '*Complete todos los datos';
-    return;
+      document.querySelector('#mensaje').innerHTML = '*Complete todos los datos';
+      return;
   }
 
   const datosLogin = { usu, contraseña };
 
   const login = async () => {
-    try {
-      const response = await fetch('/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(datosLogin),
-      });
+      try {
+          const response = await fetch('/login', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(datosLogin),
+          });
 
-      if (!response.ok) {
-        mostrarMensaje('error al verificar usuario')
+          if (!response.ok) {
+              mostrarMensaje('error al verificar usuario');
+          }
+
+          const data = await response.json();
+          console.log('Datos del usuario:', data);
+
+          loginUsuario(data);
+          if (data.id_tip_usu == 2) {
+              window.location.href = '/admin.html';
+          } else {
+              window.location.href = '/index.html';
+          }
+      } catch (error) {
+          console.error('Error de login:', error);
+          document.querySelector('#mensaje').innerHTML = 'Error al intentar iniciar sesión';
       }
-
-      const data = await response.json();
-      console.log('Datos del usuario:', data);
-
-      loginUsuario(data);  
-       if (data.id_tip_usu==2) {
-        window.location.href = '/admin.html'; 
-      } 
-      else{
-        window.location.href = '/index.html';  
-      }
-    } catch (error) {
-      console.error('Error de login:', error);
-      document.querySelector('#mensaje').innerHTML = 'Error al intentar iniciar sesión';
-    }
   };
 
   login();
 });
 
-function loginUsuario(usuario) {
-  localStorage.setItem('usuarioLogueado', JSON.stringify(usuario)); 
+function loginUsuario(usu) {
+  localStorage.setItem('usuarioLogueado', JSON.stringify(usu));
   mostrarNavbar();
 }
 
 function logOut() {
-  localStorage.removeItem('usuarioLogueado'); 
+  localStorage.removeItem('usuarioLogueado');
   mostrarNavbar();
 }
 
 function mostrarNavbar() {
   const usuarioLogueado = JSON.parse(localStorage.getItem('usuarioLogueado'));
-  
+
   if (usuarioLogueado) {
       document.getElementById('salir').style.display = 'block';
       document.getElementById('botonIngresar').style.display = 'none';
-      document.getElementById('usuarioDropdown').querySelector('.nav-link').innerText = `Hola, ${usuarioLogueado.nombre}`; 
+      document.getElementById('usuarioDropdown').querySelector('.nav-link').innerText = `Hola, ${usuarioLogueado.usu}`;
   } else {
       document.getElementById('salir').style.display = 'none';
       document.getElementById('botonIngresar').style.display = 'block';
   }
 }
-
-mostrarNavbar();

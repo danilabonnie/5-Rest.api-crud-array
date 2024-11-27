@@ -11,12 +11,12 @@
   <body>
     <div id="contenedornav"></div>  
     <div class="container">
-      <div style="position: fixed; top: 90px; left: 0; right: 0; z-index: 9999; padding: 10px; width: 25%;" id="mensajeBack">
+      <div style="position: fixed; top: 90px; left: 0; right: 0; z-index: 9999; padding: 10px; width: 25%;" id="mensaje">
       </div>
     </div>
     <div class="container-fluid">
       <hr>
-    <h1 class="d-flex justify-content-center">Iniciar Sesion</h1>
+    <h1 class="d-flex justify-content-center">Modificar contraseña</h1>
     <hr>
     <div class="container-fluid" style="height: 68vh">
 
@@ -24,20 +24,22 @@
 
         <div class="row d-flex justify-content-center">
           <div class="col col-3">
-            <form id="formlogin">
+            <form id="formCambioContraseña">
               <p id="mensajeCompletar"></p>
               <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">usuario</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="usu">
-                <div id="emailHelp" class="form-text"></div>
+                <label for="exampleInputPassword1" class="form-label">contraseña actual</label>
+                <input type="password" class="form-control" id="contraseñaActual" name="contraseña">
               </div>
               <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">contraseña</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" name="contraseña">
+                <label for="exampleInputPassword1" class="form-label">contraseña nueva</label>
+                <input type="password" class="form-control" id="nuevaContraseña" name="contraseña">
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">confirmar contraseña nueva</label>
+                <input type="password" class="form-control" id="confirmarContraseña" name="contraseña">
               </div>
               
-              <button type="submit" class="btn btn-primary">Ingresar</button>
-              <!-- <button type="button" class="btn btn-primary" id="Registrarse">Registrate</button> -->
+              <button type="submit" class="btn btn-primary">Modificar</button>
             </form>
             <hr>
         </div>
@@ -50,6 +52,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="js/login.js"></script>
+    <script type="module">
+      import { navbar } from './src/navbar.js'; 
+      document.getElementById('contenedornav').innerHTML = navbar; 
+      mostrarNavbar();
+  </script>
+  <script src="js/modcontra.js"></script>
     <script type="module" src="src/index.js"></script>
 </body>
 </html>

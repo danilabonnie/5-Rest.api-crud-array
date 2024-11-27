@@ -136,7 +136,7 @@ app.post('/login', (req, res) => {
             return res.status(200).json({
                 mensaje: 'Login exitoso',
                 id: usu.id,
-                nombre: usu.nombre,
+                usu: usu.usu,
                 id_tip_usu: usu.id_tip_usu
             });
         } else {
@@ -145,39 +145,93 @@ app.post('/login', (req, res) => {
     });
 });
 
+app.post('/mod', (req, res) => {
+    const { contraseñaActual, nuevaContraseña } = req.body;
 
+    console.log("Datos recibidos: ", req.body);  
 
+    if (!contraseñaActual || !nuevaContraseña || !req.session.id) {
+        console.log("Faltan datos: ", { contraseñaActual, nuevaContraseña, id: req.session.id });
+        return res.status(400).json({ mensaje: 'Faltan datos: contraseña actual, nueva contraseña o id_usuario en sesión.' });
+    }
 
-app.delete('/usuario/:id', (req, res) => {
-    const id = req.params.id
+    const id = req.session.id; 
 
-    const sql = "delete from usuario where id = ?"
-
-    db.query(sql, [id], (err, result) => {
+    const query = 'SELECT contraseña FROM usuario WHERE id = ?';
+    db.query(query, [id], (err, results) => {
         if (err) {
-            console.error('error al borrar')
-            return;
+            console.log("Error en la base de datos: ", err);
+            return res.status(500).json({ mensaje: 'Error al consultar la base de datos.' });
         }
-        //console.log(result)
-        res.json({ mensaje: "usuario eliminado" })
-    })
-})
 
-app.put('/usuario', (req, res) => {
-    const valores = Object.values(req.body)
-    //console.log(valores)
-    const sql = "update usuario set contraseña = ? where id = ?"
+        if (results.length === 0) {
+            console.log("Usuario no encontrado.");
+            return res.status(404).json({ mensaje: 'Usuario no encontrado.' });
+        }
 
-    db.query(sql, valores, (err, result) => {
+        if (contraseñaActual !== results[0].contraseña) {
+            console.log("Contraseña actual incorrecta.");
+            return res.status(400).json({ mensaje: 'La contraseña actual es incorrecta.' });
+        }
+
+        const updateQuery = 'UPDATE usuario SET contraseña = ? WHERE id = ?';
+        db.query(updateQuery, [nuevaContraseña, id], (err, result) => {
+            if (err) {
+                console.log("Error al actualizar la contraseña: ", err);
+                return res.status(500).json({ mensaje: 'Error al actualizar la contraseña.' });
+            }
+
+            console.log("Contraseña actualizada correctamente.");
+            return res.status(200).json({ mensaje: 'Contraseña cambiada correctamente.' });
+        });
+    });
+});
+
+app.post('/eliminarCuenta', (req, res) => {
+    const { contraseñaActual } = req.body;
+
+    if (!contraseñaActual || !req.session.id) {
+        console.log("Faltan datos: ", { contraseñaActual, id: req.session.id });
+        return res.status(400).json({ mensaje: 'Faltan datos: contraseña actual o id_usuario en sesión.' });
+    }
+
+    const usuarioId = req.session.id;  
+    
+    const query = 'SELECT contraseña FROM usuario WHERE id = ?';
+    db.query(query, [usuarioId], (err, results) => {
         if (err) {
-            console.error('error al modificar contraseña')
-            return;
+            console.log("Error en la base de datos: ", err);
+            return res.status(500).json({ mensaje: 'Error al consultar la base de datos.' });
         }
-        //console.log(result)
-        res.json({ mensaje: "contraseña actualizada", data: result })
-    })
-})
 
+        if (results.length === 0) {
+            console.log("Usuario no encontrado.");
+            return res.status(404).json({ mensaje: 'Usuario no encontrado.' });
+        }
+
+        if (contraseñaActual !== results[0].contraseña) {
+            console.log("Contraseña actual incorrecta.");
+            return res.status(400).json({ mensaje: 'La contraseña actual es incorrecta.' });
+        }
+
+        const deleteQuery = 'DELETE FROM usuario WHERE id = ?';
+        db.query(deleteQuery, [usuarioId], (err, result) => {
+            if (err) {
+                console.log("Error al eliminar la cuenta: ", err);
+                return res.status(500).json({ mensaje: 'Error al eliminar la cuenta.' });
+            }
+
+            req.session.destroy((err) => {
+                if (err) {
+                    console.log("Error al destruir la sesión: ", err);
+                    return res.status(500).json({ mensaje: 'Error al destruir la sesión.' });
+                }
+                console.log("Cuenta eliminada correctamente.");
+                return res.status(200).json({ mensaje: 'Cuenta eliminada correctamente.' });
+            });
+        });
+    });
+});
 
 app.listen(port, () => {
     console.log(`servidor corriendo en el puerto ${port}`)

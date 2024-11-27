@@ -50,68 +50,6 @@ formulario.addEventListener('submit', (event) => {
     document.querySelector('#mensajeBack').innerHTML = mensaje
   }
 
-  //eliminar producto
-  const eliminar = (id) => {
-    console.log(id)
-    if (confirm('Seguro desea eliminar?')) {
-      const eliminarProd = async () => {
-        try {
-          const res = await fetch(endpoint + '/' + id, {
-            method: 'delete'
-          })
-          //obtengo respuesta
-          const respuesta = await res.json()
-          mostrarMensaje(respuesta.mensaje)
-          setTimeout(() => { location.reload(); }, 3000)
-        } catch (error) {
-          mostrarMensaje('error al mostrar mensaje')
-        }
-
-      }
-
-      eliminarProd()
-    }
-  }
-
-  
-
-
-
-
-
-  //---------------------------------------------------------
-
-  //const respuesta = fetch('http://localhost:3000/productos')
-  //.then(respuesta => respuesta.json())// respuesta = endpoint
-  //.then(datos => mostrarProductos(datos));
-
-
-  const formEditar = document.forms['formulario2']
-  console.log(formEditar)
-  const editar = (id) => {
-    console.log(id)
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    //abro formulario de editar 
-    document.querySelector("#editarproducto").style.display = 'block'
-    //contenedor de datos a editar
-    let prodEditar = {}
-    // recoorro los datos del json para ubicar el prod a editar
-    productosRecibidos.filter(prod => {
-      if (prod.id == id) {
-        prodEditar = prod
-      }
-    })
-    console.log(prodEditar)
-
-    //Asignar los valores obtenidos al formulario
-    formEditar.id.value = prodEditar.id
-    formEditar.titulo.value = prodEditar.titulo
-    formEditar.descripcion.value = prodEditar.descripcion
-    formEditar.precio.value = prodEditar.precio
-    formEditar.imagen.value = prodEditar.imagen
-  }
-
-  // formEditar.addEventListener('submit', (event) => {
   //   event.preventDefault();
   //   //creo objeto con nuevos datos
   //   const nuevosDatos = {
