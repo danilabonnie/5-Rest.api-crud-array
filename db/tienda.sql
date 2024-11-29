@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-11-2024 a las 21:28:54
+-- Tiempo de generación: 29-11-2024 a las 08:32:06
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -40,7 +40,7 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`id`, `titulo`, `descripcion`, `precio`, `imagen`) VALUES
-(1, 'MCR', 'Descripcion', 123, 'th.jpg'),
+(1, 'MCR', 'Descripcion', 123, 'mcr.jpg'),
 (2, 'Ash Plushie', 'love her', 10000, 'sash.jpg'),
 (5, 'monopatin', 'aaa', 222, 'th.jpg'),
 (6, 'eeeeeeeeeeee', 'aaaaaaaaaaaa', 1111111111, 'fnaf.jpg');
@@ -82,8 +82,7 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id`, `usu`, `contraseña`, `id_tip_usu`) VALUES
-(1, 'danila', 'danila', 2),
-(32, 'usuario', '123', 1);
+(1, 'danila', 'danila', 2);
 
 --
 -- Índices para tablas volcadas
@@ -116,7 +115,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `tipo_usuarios`
@@ -128,7 +127,7 @@ ALTER TABLE `tipo_usuarios`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas

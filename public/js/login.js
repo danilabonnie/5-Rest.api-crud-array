@@ -2,16 +2,13 @@ document.addEventListener('DOMContentLoaded', function() {
   mostrarNavbar();
 });
 
-const mostrarMensaje = (mensaje) => {
-  console.log(mensaje);
-  const mensajeBack = document.querySelector('#mensajeBack');
-  if (mensajeBack) {
-      mensajeBack.className += " bg-warning";
-      mensajeBack.innerHTML = mensaje;
-  } else {
-      console.error('El elemento #mensajeBack no existe en el DOM.');
-  }
-};
+mostrarMensaje = (mensaje) => {
+  console.log(mensaje)
+  console.log(document.querySelector('#mensajeBack'))
+  document.querySelector('#mensajeBack').className += " bg-warning";
+  document.querySelector('#mensajeBack').innerHTML = mensaje;
+}
+
 
 const formularioLogin = document.forms['formlogin'];
 formularioLogin.addEventListener('submit', (event) => {
@@ -21,7 +18,7 @@ formularioLogin.addEventListener('submit', (event) => {
   const contraseña = formularioLogin.contraseña.value;
 
   if (!usu || !contraseña) {
-      document.querySelector('#mensaje').innerHTML = '*Complete todos los datos';
+      mostrarMensaje('*Complete todos los datos', 'danger');
       return;
   }
 
@@ -38,22 +35,27 @@ formularioLogin.addEventListener('submit', (event) => {
           });
 
           if (!response.ok) {
-              mostrarMensaje('error al verificar usuario');
+              const errorData = await response.json();
+              mostrarMensaje(errorData.mensaje, 'danger');
+              return;
           }
 
           const data = await response.json();
           console.log('Datos del usuario:', data);
 
+          mostrarMensaje(data.mensaje, 'success');
           loginUsuario(data);
+
           if (data.id_tip_usu == 2) {
               window.location.href = '/admin.html';
           } else {
               window.location.href = '/index.html';
           }
       } catch (error) {
-          console.error('Error de login:', error);
-          document.querySelector('#mensaje').innerHTML = 'Error al intentar iniciar sesión';
+          mostrarMensaje('Error al intentar iniciar sesión', 'danger');
       }
+
+      setTimeout(() => { location.reload(); }, 1000);
   };
 
   login();

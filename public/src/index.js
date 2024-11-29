@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
         usuarioDropdown.style.display = "none";
         localStorage.removeItem('usuarioLogueado');
         actualizarNavbar();
+        window.location.href = '/index.html';
     });
 
     function actualizarNavbar() {

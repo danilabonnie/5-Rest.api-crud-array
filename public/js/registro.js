@@ -34,7 +34,7 @@ formulario.addEventListener('submit', (event) => {
             console.log(respuesta.mensaje)
 
             mostrarMensaje(respuesta.mensaje)
-            setTimeout(() => { location.reload(); }, 3000)
+            setTimeout(() => { window.location.href = '/login.html'; }, 3000)
         } catch (error) {
             console.log(error)
         }
@@ -49,46 +49,3 @@ formulario.addEventListener('submit', (event) => {
     document.querySelector('#mensajeBack').className += " bg-warning";
     document.querySelector('#mensajeBack').innerHTML = mensaje
   }
-
-  //   event.preventDefault();
-  //   //creo objeto con nuevos datos
-  //   const nuevosDatos = {
-  //     titulo: formEditar.titulo.value,
-  //     descripcion: formEditar.descripcion.value,
-  //     precio: formEditar.precio.value,
-  //     imagen: formEditar.imagen.value,
-  //     id: formEditar.id.value
-  //   }
-
-  //   if (!nuevosDatos.id || !nuevosDatos.titulo || !nuevosDatos.descripcion || !nuevosDatos.precio) {
-  //     document.querySelector('#mensajeCompletar2').innerHTML = '*Complete todos los datos'
-  //     document.querySelector('#mensajeCompletar2').className += " bg-danger text-light";
-  //     return
-  //   }
-  //   else {
-  //     document.querySelector('#mensajeCompletar2').innerHTML = ''
-  //     // return
-  //   }
-
-  //   // //validacion de campos vacios igual anterior 
-  //   let nuevosDatosJson = JSON.stringify(nuevosDatos)
-  //   console.log(nuevosDatosJson)
-  //   const enviarNewDatos = async () => {
-  //     try {
-  //       const enviarDatos = await fetch(endpoint, {
-  //         method: 'put',
-  //         headers: {
-  //           'content-type': 'application/json'
-  //         },
-  //         body: nuevosDatosJson
-  //       })
-  //       const respuesta = await enviarDatos.json()
-  //       console.log(respuesta)
-  //       mostrarMensaje(respuesta.mensaje)
-  //     } catch (error) {
-  //       mostrarMensaje('error al verificar datos')
-  //     }
-  //     setTimeout(() => { location.reload(); }, 1000)
-  //   }
-  //   enviarNewDatos();
-  // }) 

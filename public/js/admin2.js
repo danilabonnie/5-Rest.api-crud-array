@@ -217,7 +217,9 @@ const editar = (id) => {
           body: nuevosDatosJson
         })
         const respuesta= await enviarDatos.json()
+
         console.log(respuesta)
+        
         mostrarMensaje(respuesta.mensaje)
       }catch(error){
         mostrarMensaje('error al verificar datos')

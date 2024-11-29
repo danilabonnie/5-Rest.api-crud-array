@@ -11,7 +11,7 @@
   <body>
     <div id="contenedornav"></div>  
     <div class="container">
-      <div style="position: fixed; top: 90px; left: 0; right: 0; z-index: 9999; padding: 10px; width: 25%;" id="mensaje">
+      <div style="position: fixed; top: 90px; left: 0; right: 0; z-index: 9999; padding: 10px; width: 25%;" id="mensajeBack">
       </div>
     </div>
     <div class="container-fluid">
@@ -27,19 +27,21 @@
             <form id="formCambioContraseña">
               <p id="mensajeCompletar"></p>
               <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">contraseña actual</label>
-                <input type="password" class="form-control" id="contraseñaActual" name="contraseña">
-              </div>
-              <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">contraseña nueva</label>
-                <input type="password" class="form-control" id="nuevaContraseña" name="contraseña">
-              </div>
-              <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">confirmar contraseña nueva</label>
-                <input type="password" class="form-control" id="confirmarContraseña" name="contraseña">
-              </div>
-              
-              <button type="submit" class="btn btn-primary">Modificar</button>
+                <label for="contraseñaActual" class="form-label text-dark">Contraseña Actual</label>
+                <input type="password" class="form-control" id="contraseñaActual" required>
+            </div>
+    
+            <div class="mb-3">
+                <label for="nuevaContraseña" class="form-label text-dark">Nueva Contraseña</label>
+                <input type="password" class="form-control" id="nuevaContraseña" required>
+            </div>
+    
+            <div class="mb-3">
+                <label for="confirmarContraseña" class="form-label text-dark">Confirmar Nueva Contraseña</label>
+                <input type="password" class="form-control" id="confirmarContraseña" required>
+            </div>
+    
+            <button type="submit" class="btn btn-primary">Cambiar Contraseña</button>
             </form>
             <hr>
         </div>
@@ -57,7 +59,7 @@
       document.getElementById('contenedornav').innerHTML = navbar; 
       mostrarNavbar();
   </script>
-  <script src="js/modcontra.js"></script>
+  <script src="js/modificarContra.js"></script>
     <script type="module" src="src/index.js"></script>
 </body>
 </html>
